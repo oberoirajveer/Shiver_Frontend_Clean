@@ -5,7 +5,7 @@ import AboutModal from './AboutModal';
 import './Navbar.css';
 
 const Navbar = () => {
-  const { currentUser, signInWithGoogle, signOutUser } = useAuth();
+  const { currentUser, signOutUser } = useAuth();
   const location = useLocation();
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
