@@ -7,7 +7,6 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import "./App.css";
-import { track } from '@vercel/analytics/react';
 
 const App = () => {
   const [currentTemp, setCurrentTemp] = useState(null);

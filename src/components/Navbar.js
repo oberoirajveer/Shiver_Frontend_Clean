@@ -23,14 +23,6 @@ const Navbar = () => {
     }
   }, []);
 
-  const handleSignIn = async () => {
-    try {
-      await signInWithGoogle();
-    } catch (error) {
-      console.error('Error signing in:', error);
-    }
-  };
-
   const handleSignOut = async () => {
     try {
       await signOutUser();
