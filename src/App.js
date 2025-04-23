@@ -155,11 +155,6 @@ const App = () => {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
-  const formatStartTime = (startTime) => {
-    if (!startTime || startTime === 'Unknown') return 'Unknown';
-    return startTime; // The startTime is already in a readable format from NTP
-  };
-
   const shareToTwitter = () => {
     const message = `🚿 Just took a cold shower at ${currentTemp}°F! ${getTemperatureMessage(currentTemp)} Check out my cold shower journey!`;
     const url = window.location.href;
