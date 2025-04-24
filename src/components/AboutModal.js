@@ -36,7 +36,7 @@ const AboutModal = ({ isOpen, onClose }) => {
           <section className="about-section">
             <h3>How do I Use This?</h3>
             <p className="about-paragraph">
-              Shiver requires the install of a device onto your shower head. You can preorder one <a href="https://buy.stripe.com/9AQcO80K7gcueiI288" target="_blank" rel="noopener noreferrer">here</a>.
+              Shiver requires the install of a device onto your shower head. You can preorder one <a href="https://buy.stripe.com/3cs4hC78vd0ib6w7st" target="_blank" rel="noopener noreferrer">here</a>.
             </p>
           </section>
         </div>
