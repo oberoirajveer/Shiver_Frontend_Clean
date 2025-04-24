@@ -16,7 +16,7 @@ const AboutModal = ({ isOpen, onClose }) => {
         <div className="about-modal-body">
           <section className="about-section">
             <h3>Our North Star</h3>
-            <p className="about-paragraph">Do hard stuff, voluntarily </p>
+            <p className="about-paragraph">Do hard stuff, voluntarily. </p>
           </section>
 
           <section className="about-section">
@@ -26,6 +26,10 @@ const AboutModal = ({ isOpen, onClose }) => {
             </p>
             <p className="about-paragraph">
               He likes to take cold showers. He thinks others might as well.
+            </p>
+
+            <p className="about-paragraph">
+              The Showers shown on this page are Rajveer's. Do you think you can take colder ones?
             </p>
           </section>
 
