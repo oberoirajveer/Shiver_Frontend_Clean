@@ -309,6 +309,19 @@ const App = () => {
                   </div>
                 )}
 
+                <div className="personal-header">
+                  <div className="profile-section">
+                    <div className="profile-picture-container">
+                      <img 
+                        src="/pfp.jpeg" 
+                        alt="Rajveer's Profile" 
+                        className="profile-picture"
+                      />
+                    </div>
+                    <h1>Rajveer's Showers</h1>
+                  </div>
+                </div>
+
                 <div className="shower-selector">
                   <h3>Select Shower Session</h3>
                   <div className="shower-list">
