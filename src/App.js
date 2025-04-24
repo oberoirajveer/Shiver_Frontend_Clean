@@ -6,6 +6,7 @@ import { getUserProfile } from "./services/userService";
 import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
+import profilePicture from "./assets/profilePictures/pfp.jpeg";
 import "./App.css";
 
 const App = () => {
@@ -313,7 +314,7 @@ const App = () => {
                   <div className="profile-section">
                     <div className="profile-picture-container">
                       <img 
-                        src="/pfp.jpeg" 
+                        src={profilePicture} 
                         alt="Rajveer's Profile" 
                         className="profile-picture"
                       />
