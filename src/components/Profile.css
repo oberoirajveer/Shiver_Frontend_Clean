@@ -181,11 +181,26 @@
     flex-direction: column;
     text-align: center;
     padding: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
   }
 
   .profile-avatar {
     width: 100px;
     height: 100px;
+    margin: 0 auto;
+  }
+
+  .profile-info {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  .profile-info h1 {
+    margin: 0;
+    font-size: 1.5rem;
   }
 
   .profile-stats {
