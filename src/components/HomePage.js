@@ -1,5 +1,9 @@
 import React from 'react';
 import './HomePage.css';
+import showerBg from '../assets/images/shower-bg.png';
+import temperatureStats from '../assets/images/Temperature Stats.png';
+import temperatureGraph from '../assets/images/Temperature Graph.png';
+import weeklyGoals from '../assets/images/WeekyGoals.png';
 
 const HomePage = () => {
   return (
@@ -20,7 +24,7 @@ const HomePage = () => {
         <div 
           className="hero-image"
           style={{ 
-            backgroundImage: `url(${process.env.PUBLIC_URL}/images/shower-bg.png)`
+            backgroundImage: `url(${showerBg})`
           }}
         />
         <div className="disclaimer">
@@ -36,7 +40,7 @@ const HomePage = () => {
             <h3 className="feature-title">Shower Temperatures</h3>
             <p>Dermatologists recommend shower temperatures to be below 105°F. Are you staying within that range?</p>
             <img 
-              src={`${process.env.PUBLIC_URL}/images/Temperature Stats.png`}
+              src={temperatureStats}
               alt="Temperature Statistics" 
               className="feature-image"
             />
@@ -45,7 +49,7 @@ const HomePage = () => {
             <h3>How hot was the water when I washed my hair? What about my face?</h3>
             <p>Dig into the data to ensure that the water temperature was right, at different times of your shower, based on your specific needs</p>
             <img 
-              src={`${process.env.PUBLIC_URL}/images/Temperature Graph.png`}
+              src={temperatureGraph}
               alt="Temperature Graph" 
               className="feature-image"
             />
@@ -54,7 +58,7 @@ const HomePage = () => {
             <h3>Birds Eye View of Your Temperature Goals</h3>
             <p>Building a cold shower habit? Trying to reduce your heat exposure? We&apos;ve got you covered.</p>
             <img 
-              src={`${process.env.PUBLIC_URL}/images/WeekyGoals.png`}
+              src={weeklyGoals}
               alt="Weekly Goals View" 
               className="feature-image"
             />

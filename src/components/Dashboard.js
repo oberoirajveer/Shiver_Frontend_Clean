@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { fetchShowers, fetchShowerData } from '../services/api';
+import pfp from '../assets/images/pfp.jpeg';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -207,7 +208,7 @@ const Dashboard = () => {
       <div className="dashboard-header">
         <div className="profile-header">
           <div className="profile-picture-container">
-            <img src="/pfp.jpeg" alt="Profile" className="profile-picture" />
+            <img src={pfp} alt="Profile" className="profile-picture" />
           </div>
           <h1>Rajveer&apos;s Showers</h1>
         </div>
