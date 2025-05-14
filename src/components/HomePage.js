@@ -20,7 +20,7 @@ const HomePage = () => {
         <div 
           className="hero-image"
           style={{ 
-            backgroundImage: `url('/images/shower-bg.png')`
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/shower-bg.png)`
           }}
         />
         <div className="disclaimer">
@@ -36,7 +36,7 @@ const HomePage = () => {
             <h3 className="feature-title">Shower Temperatures</h3>
             <p>Dermatologists recommend shower temperatures to be below 105°F. Are you staying within that range?</p>
             <img 
-              src="/images/Temperature Stats.png" 
+              src={`${process.env.PUBLIC_URL}/images/Temperature Stats.png`}
               alt="Temperature Statistics" 
               className="feature-image"
             />
@@ -45,7 +45,7 @@ const HomePage = () => {
             <h3>How hot was the water when I washed my hair? What about my face?</h3>
             <p>Dig into the data to ensure that the water temperature was right, at different times of your shower, based on your specific needs</p>
             <img 
-              src="/images/Temperature Graph.png" 
+              src={`${process.env.PUBLIC_URL}/images/Temperature Graph.png`}
               alt="Temperature Graph" 
               className="feature-image"
             />
@@ -54,7 +54,7 @@ const HomePage = () => {
             <h3>Birds Eye View of Your Temperature Goals</h3>
             <p>Building a cold shower habit? Trying to reduce your heat exposure? We&apos;ve got you covered.</p>
             <img 
-              src="/images/WeekyGoals.png" 
+              src={`${process.env.PUBLIC_URL}/images/WeekyGoals.png`}
               alt="Weekly Goals View" 
               className="feature-image"
             />
