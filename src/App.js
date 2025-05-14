@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { fetchShowers, fetchShowerData } from "./services/api";
 import { getUserProfile } from "./services/userService";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -8,14 +8,11 @@ import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
-import profilePicture from "./assets/profilePictures/pfp.jpeg";
 import "./App.css";
 
 const App = () => {
   const [currentTemp, setCurrentTemp] = useState(null);
-  const [showers, setShowers] = useState([]);
   const [selectedShower, setSelectedShower] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
@@ -29,19 +26,10 @@ const App = () => {
     return 'temp-warm';                       // Warm: red/orange
   };
 
-  const getTemperatureColor = (temp) => {
-    if (!temp) return '#90caf9';  // Unknown: light blue
-    if (temp < 50) return '#2196f3';  // Very cold: deep blue
-    if (temp < 60) return '#4fc3f7';  // Cold: medium blue
-    if (temp < 70) return '#81d4fa';  // Cool: light blue
-    return '#ff7043';  // Warm: red/orange
-  };
-
   // Fetch all showers
   useEffect(() => {
     const loadShowers = async () => {
       try {
-        setLoading(true);
         setError(null);
         const showerData = await fetchShowers();
         if (!showerData || showerData.length === 0) {
@@ -70,8 +58,6 @@ const App = () => {
           })
         );
         
-        setShowers(showersWithDetails);
-        
         // Load user profiles for all showers
         const profiles = {};
         for (const shower of showersWithDetails) {
@@ -96,8 +82,6 @@ const App = () => {
       } catch (err) {
         setError('Failed to load showers');
         console.error('Error loading showers:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -110,7 +94,6 @@ const App = () => {
       if (!selectedShower) return;
 
       try {
-        setLoading(true);
         setError(null);
         const showerData = await fetchShowerData(selectedShower);
         
@@ -128,8 +111,6 @@ const App = () => {
       } catch (err) {
         setError('Failed to load shower data');
         console.error('Error loading shower data:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -142,13 +123,6 @@ const App = () => {
     if (temp < 60) return "Chilly! But that's what makes you stronger! 💪";
     if (temp < 70) return "Getting warmer! Keep pushing!";
     return "Hot stuff! You're crushing it! 🔥";
-  };
-
-  const formatChartTime = (timestamp) => {
-    const seconds = parseInt(timestamp);
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   const formatChartTooltip = (timestamp) => {
@@ -307,7 +281,6 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            {/* Add more routes as needed */}
           </Routes>
         </div>
       </AuthProvider>
