@@ -205,7 +205,7 @@ const Profile = () => {
           </div>
         ) : (
           <div className="no-showers">
-            You haven't taken any showers yet. Start your cold shower journey today!
+            You haven&apos;t taken any showers yet. Start your cold shower journey today!
           </div>
         )}
       </div>

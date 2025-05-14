@@ -204,6 +204,15 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
+      <div className="dashboard-header">
+        <div className="profile-header">
+          <div className="profile-picture-container">
+            <img src="/pfp.jpeg" alt="Profile" className="profile-picture" />
+          </div>
+          <h1>Rajveer&apos;s Showers</h1>
+        </div>
+      </div>
+
       {error && (
         <div className="error-message">
           {error}
