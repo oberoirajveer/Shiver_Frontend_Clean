@@ -1,0 +1,346 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.homepage {
+  padding-top: 80px; /* Account for fixed navbar */
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  padding: 4rem 2rem;
+  color: #fff;
+  width: 100%;
+  background: #f5f5f5;  /* Light beige background to match the image */
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 30%;
+  text-align: left;
+  padding-right: 4rem;
+  box-sizing: border-box;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: #000;  /* Changed to black for better contrast */
+  text-shadow: none;  /* Removed text shadow */
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #333;  /* Changed to dark gray for better contrast */
+  margin-bottom: 2.5rem;
+  text-shadow: none;  /* Removed text shadow */
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-start;
+}
+
+.cta-button {
+  padding: 1rem 2.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.cta-button.primary {
+  background: #000;
+  color: #fff;
+}
+
+.cta-button.primary:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button.secondary {
+  background: transparent;
+  color: #000;
+  border: 2px solid #000;
+}
+
+.cta-button.secondary:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hero-image {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 70%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  border: 12px solid #f5f5f5;
+  border-radius: 24px;
+  margin: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hero-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: none;
+  z-index: 1;
+  border-radius: 12px;  /* Slightly smaller than parent to account for border */
+}
+
+.disclaimer {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #666;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.disclaimer p {
+  margin: 0;
+}
+
+.image-placeholder {
+  width: 100%;
+  max-width: 500px;
+  height: 400px;
+  background: linear-gradient(45deg, #f3f3f3, #e0e0e0);
+  border-radius: 12px;
+}
+
+/* Features Section */
+.features {
+  padding: 6rem 2rem;
+  background: #fafafa;
+}
+
+.features h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.feature-title {
+  text-align: center;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.feature-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.features-disclaimer {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+/* CTA Section */
+.cta-section {
+  padding: 6rem 2rem;
+  background: linear-gradient(45deg, #000, #333);
+  color: #fff;
+  text-align: center;
+}
+
+.cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.cta-section p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.cta-section .cta-button.primary {
+  background: #fff;
+  color: #000;
+}
+
+.cta-section .cta-button.primary:hover {
+  background: #f0f0f0;
+}
+
+/* Temperature Section */
+.temperature-section {
+  padding: 2rem;
+  background: #fafafa;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1rem;
+    overflow-x: hidden;
+  }
+
+  .hero-content {
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .hero-image {
+    position: relative;
+    width: calc(100% - 40px);  /* Account for margins */
+    height: 300px;
+    margin: 20px;
+    border-width: 8px;  /* Slightly thinner border on mobile */
+    border-radius: 16px;
+  }
+
+  .hero-image::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(245, 245, 245, 0.3) 0%,
+      rgba(245, 245, 245, 0.1) 50%,
+      rgba(245, 245, 245, 0) 100%
+    );
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+    padding: 0 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    padding: 0 1rem;
+  }
+
+  .hero-cta {
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+
+  .cta-button {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .features {
+    padding: 4rem 1rem;
+  }
+
+  .features h2 {
+    font-size: 2rem;
+  }
+
+  .cta-section {
+    padding: 4rem 1rem;
+  }
+
+  .cta-section h2 {
+    font-size: 2rem;
+  }
+} 

@@ -5,6 +5,8 @@ import { fetchShowers, fetchShowerData } from "./services/api";
 import { getUserProfile } from "./services/userService";
 import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
+import HomePage from "./components/HomePage";
+import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import profilePicture from "./assets/profilePictures/pfp.jpeg";
 import "./App.css";
@@ -299,172 +301,13 @@ const App = () => {
   return (
     <Router>
       <AuthProvider>
-        <div className="App">
+        <div className="app">
           <Navbar />
           <Routes>
-            <Route path="/" element={
-              <>
-                {error && (
-                  <div className="error-message">
-                    {error}
-                  </div>
-                )}
-
-                <div className="personal-header">
-                  <div className="profile-section">
-                    <div className="profile-picture-container">
-                      <img 
-                        src={profilePicture} 
-                        alt="Rajveer's Profile" 
-                        className="profile-picture"
-                      />
-                    </div>
-                    <h1>Rajveer's Showers</h1>
-                  </div>
-                </div>
-
-                <div className="shower-selector">
-                  <h3>Select Shower Session</h3>
-                  <div className="shower-list">
-                    {loading ? (
-                      <div className="loading">Loading showers...</div>
-                    ) : (
-                      showers.map(shower => formatShowerButton(shower))
-                    )}
-                  </div>
-                </div>
-
-                {/* Modal for detailed shower data */}
-                {showModal && (
-                  <div className="modal-overlay" onClick={closeModal}>
-                    <div className="modal-content" onClick={e => e.stopPropagation()}>
-                      <button className="modal-close" onClick={closeModal}>×</button>
-                      
-                      {modalLoading ? (
-                        <div className="modal-loading">Loading detailed data...</div>
-                      ) : modalData ? (
-                        <>
-                          <div className="modal-header">
-                            <h2>Shower Details</h2>
-                            <p className="modal-date">{formatModalTime(modalData.startTime)}</p>
-                          </div>
-                          
-                          <div className="modal-sections">
-                            <div className={`modal-section stats-section ${getTemperatureClass(modalData.avgTemp)}`}>
-                              <h3>Statistics</h3>
-                              <div className="modal-stats">
-                                <div className="modal-stat">
-                                  <span className="modal-stat-label">Duration</span>
-                                  <span className="modal-stat-value">{formatModalDuration(modalData.duration)}</span>
-                                </div>
-                                <div className="modal-stat">
-                                  <span className="modal-stat-label">Min Temperature</span>
-                                  <span className="modal-stat-value">{modalData.minTemp ? `${modalData.minTemp.toFixed(1)}°F` : '--'}</span>
-                                </div>
-                                <div className="modal-stat">
-                                  <span className="modal-stat-label">Max Temperature</span>
-                                  <span className="modal-stat-value">{modalData.maxTemp ? `${modalData.maxTemp.toFixed(1)}°F` : '--'}</span>
-                                </div>
-                                <div className="modal-stat">
-                                  <span className="modal-stat-label">Avg Temperature</span>
-                                  <span className="modal-stat-value">{modalData.avgTemp ? `${modalData.avgTemp.toFixed(1)}°F` : '--'}</span>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <div className="modal-section chart-section">
-                              <h3>Temperature Journey</h3>
-                              {modalData.temperatureReadings ? (
-                                <ResponsiveContainer width="100%" height={300}>
-                                  <LineChart data={Object.entries(modalData.temperatureReadings)
-                                    .map(([time, temp]) => ({
-                                      time: parseInt(time),
-                                      temperature: temp
-                                    }))
-                                    .sort((a, b) => a.time - b.time)
-                                  }>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                                    <XAxis 
-                                      dataKey="time" 
-                                      stroke="#333"
-                                      tickFormatter={formatChartTime}
-                                      axisLine={{ stroke: '#333', strokeWidth: 2 }}
-                                      tick={{ fill: '#666', fontSize: 12 }}
-                                    />
-                                    <YAxis 
-                                      domain={["auto", "auto"]} 
-                                      stroke="#333"
-                                      tickFormatter={(value) => `${value}°F`}
-                                      axisLine={{ stroke: '#333', strokeWidth: 2 }}
-                                      tick={{ fill: '#666', fontSize: 12 }}
-                                    />
-                                    <Tooltip 
-                                      contentStyle={{ 
-                                        backgroundColor: '#2a2a2a', 
-                                        border: 'none', 
-                                        borderRadius: '8px',
-                                        color: '#fff'
-                                      }}
-                                      labelFormatter={formatChartTooltip}
-                                      formatter={(value) => [`${value}°F`, 'Temperature']}
-                                    />
-                                    <Line 
-                                      type="monotone" 
-                                      dataKey="temperature" 
-                                      stroke={getTemperatureColor(modalData.avgTemp)}
-                                      strokeWidth={7}
-                                      dot={false}
-                                    />
-                                  </LineChart>
-                                </ResponsiveContainer>
-                              ) : (
-                                <div className="no-data">No temperature data available</div>
-                              )}
-                            </div>
-                          </div>
-                          
-                          <div className="share-buttons">
-                            <button 
-                              className={`share-button twitter ${getTemperatureClass(modalData.avgTemp)}`}
-                              onClick={shareToTwitter}
-                            >
-                              🐦 Share on Twitter
-                            </button>
-                            <button 
-                              className={`share-button instagram ${getTemperatureClass(modalData.avgTemp)}`}
-                              onClick={shareToInstagram}
-                            >
-                              📸 Share on Instagram
-                            </button>
-                            <button 
-                              className={`share-button email ${getTemperatureClass(modalData.avgTemp)}`}
-                              onClick={shareViaEmail}
-                            >
-                              📧 Share via Email
-                            </button>
-                            <button 
-                              className={`share-button whatsapp ${getTemperatureClass(modalData.avgTemp)}`}
-                              onClick={shareToWhatsApp}
-                            >
-                              💬 Share on WhatsApp
-                            </button>
-                            <button 
-                              className={`share-button telegram ${getTemperatureClass(modalData.avgTemp)}`}
-                              onClick={shareToTelegram}
-                            >
-                              ✈️ Share on Telegram
-                            </button>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="modal-error">Failed to load shower data</div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </>
-            } />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
+            {/* Add more routes as needed */}
           </Routes>
         </div>
       </AuthProvider>

@@ -1,0 +1,338 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-section {
+  margin: 2rem 0;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.personal-header {
+  margin-bottom: 3rem;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.profile-picture-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-section h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.shower-selector {
+  margin-bottom: 3rem;
+}
+
+.shower-selector h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.shower-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.shower-button {
+  position: relative;
+  width: 100%;
+  padding: 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.shower-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.shower-button.active {
+  border: 2px solid #2196f3;
+}
+
+.shower-button-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
+}
+
+.shower-button-content {
+  position: relative;
+  z-index: 1;
+}
+
+.shower-button-date {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.shower-button-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.shower-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Temperature classes */
+.temp-very-cold {
+  background: linear-gradient(45deg, #1976d2, #2196f3);
+  color: white;
+}
+
+.temp-cold {
+  background: linear-gradient(45deg, #2196f3, #4fc3f7);
+  color: white;
+}
+
+.temp-cool {
+  background: linear-gradient(45deg, #4fc3f7, #81d4fa);
+  color: white;
+}
+
+.temp-warm {
+  background: linear-gradient(45deg, #ff7043, #ffab91);
+  color: white;
+}
+
+.temp-unknown {
+  background: linear-gradient(45deg, #90caf9, #bbdefb);
+  color: white;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0.5rem;
+  line-height: 1;
+}
+
+.modal-header {
+  margin-bottom: 2rem;
+}
+
+.modal-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-date {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.modal-sections {
+  display: grid;
+  gap: 2rem;
+}
+
+.modal-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.modal-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.modal-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+}
+
+.modal-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.modal-stat-value {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.chart-section {
+  background: white;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.modal-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.modal-error {
+  text-align: center;
+  padding: 2rem;
+  color: #c62828;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.page-button {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #666;
+  font-size: 14px;
+}
+
+.page-button:hover {
+  background-color: #f5f5f5;
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.page-button.active {
+  background-color: #2196f3;
+  border-color: #2196f3;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .profile-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .profile-section h1 {
+    font-size: 2rem;
+  }
+
+  .shower-list {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .modal-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+} 

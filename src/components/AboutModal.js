@@ -29,7 +29,7 @@ const AboutModal = ({ isOpen, onClose }) => {
             </p>
 
             <p className="about-paragraph">
-              The Showers shown on this page are Rajveer's. Do you think you can take colder ones?
+              The Showers shown on the "Dashboard" page are Rajveer's; they update in real time. Do you think you can take colder ones?
             </p>
           </section>
 
