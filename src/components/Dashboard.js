@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { fetchShowers, fetchShowerData } from '../services/api';
-import { getUserProfile } from '../services/userService';
-import profilePicture from '../assets/profilePictures/pfp.jpeg';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const [currentTemp, setCurrentTemp] = useState(null);
   const [showers, setShowers] = useState([]);
   const [selectedShower, setSelectedShower] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -212,19 +209,6 @@ const Dashboard = () => {
           {error}
         </div>
       )}
-
-      <div className="personal-header">
-        <div className="profile-section">
-          <div className="profile-picture-container">
-            <img 
-              src={profilePicture} 
-              alt="Rajveer's Profile" 
-              className="profile-picture"
-            />
-          </div>
-          <h1>Rajveer's Showers</h1>
-        </div>
-      </div>
 
       <div className="shower-selector">
         <h3>Select Shower Session</h3>

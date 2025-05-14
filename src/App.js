@@ -273,8 +273,8 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <AuthProvider>
+    <AuthProvider>
+      <Router>
         <div className="app">
           <Navbar />
           <Routes>
@@ -283,8 +283,8 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
-      </AuthProvider>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 };
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './HomePage.css';
 
 const HomePage = () => {
@@ -10,7 +9,7 @@ const HomePage = () => {
         <div className="hero-content">
           <h1>A better shower starts with the Shiver Sensor</h1>
           <p className="hero-subtitle">
-            The Shiver Sensor is the only device that seemlessly tracks your showers— allowing you to unlock better skin, hair, and all round health. Whether you're ready to build a cold shower habit or reduce excess hot water exposure, the Shiver Sensor is for you.
+            The Shiver Sensor is the only device that seemlessly tracks your showers— allowing you to unlock better skin, hair, and all round health. Whether you&apos;re ready to build a cold shower habit or reduce excess hot water exposure, the Shiver Sensor is for you.
           </p>
           <div className="hero-cta">
             <a href="https://buy.stripe.com/3cs4hC78vd0ib6w7st" className="cta-button secondary" target="_blank" rel="noopener noreferrer">
@@ -53,7 +52,7 @@ const HomePage = () => {
           </div>
           <div className="feature-card">
             <h3>Birds Eye View of Your Temperature Goals</h3>
-            <p>Building a cold shower habit? Trying to reduce your heat exposure? We've got you covered.</p>
+            <p>Building a cold shower habit? Trying to reduce your heat exposure? We&apos;ve got you covered.</p>
             <img 
               src="/images/WeekyGoals.png" 
               alt="Weekly Goals View" 
