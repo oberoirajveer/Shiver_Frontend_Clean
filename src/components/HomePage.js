@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './HomePage.css';
 import showerBg from '../assets/images/shower-bg.png';
+import sensorUnitRender from '../assets/images/SensorUnitRender.png';
 import temperatureStats from '../assets/images/Temperature Stats.png';
 import temperatureGraph from '../assets/images/Temperature Graph.png';
 import weeklyGoals from '../assets/images/WeekyGoals.png';
 
 const HomePage = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [
+    {
+      image: showerBg
+    },
+    {
+      image: sensorUnitRender
+    }
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
   return (
     <div className="homepage">
       {/* Hero Section */}
@@ -21,12 +36,26 @@ const HomePage = () => {
             </a>
           </div>
         </div>
-        <div 
-          className="hero-image"
-          style={{ 
-            backgroundImage: `url(${showerBg})`
-          }}
-        />
+        <div className="hero-image-container">
+          <div 
+            className="hero-image"
+            style={{ 
+              backgroundImage: `url(${slides[currentSlide].image})`
+            }}
+          />
+          <button className="slide-arrow" onClick={nextSlide}>
+            <span>❯</span>
+          </button>
+        </div>
+        <div className="slide-indicators">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={`slide-indicator ${currentSlide === index ? 'active' : ''}`}
+              onClick={() => setCurrentSlide(index)}
+            />
+          ))}
+        </div>
         <div className="disclaimer">
           <p>*The image shown is a render. The final product footprint may vary.</p>
         </div>
