@@ -6,7 +6,6 @@ import { getUserProfile } from "./services/userService";
 import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
-import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import "./App.css";
 
@@ -279,7 +278,6 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
