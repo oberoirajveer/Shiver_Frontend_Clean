@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { fetchShowers, fetchShowerData } from "./services/api";
@@ -6,7 +6,6 @@ import { getUserProfile } from "./services/userService";
 import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
-import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import "./App.css";
 
@@ -17,85 +16,89 @@ const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
+  const [showers, setShowers] = useState([]);
+  const [profiles, setProfiles] = useState({});
 
-  const getTemperatureClass = (temp) => {
+  const getTemperatureClass = useCallback((temp) => {
     if (!temp) return 'temp-unknown';
     if (temp < 50) return 'temp-very-cold';  // Very cold: deep blue
     if (temp < 60) return 'temp-cold';       // Cold: medium blue
     if (temp < 70) return 'temp-cool';       // Cool: light blue
     return 'temp-warm';                       // Warm: red/orange
-  };
+  }, []);
 
   // Fetch all showers
   useEffect(() => {
+    let isMounted = true;
     const loadShowers = async () => {
       try {
         setError(null);
         const showerData = await fetchShowers();
+        if (!isMounted) return;
+        
         if (!showerData || showerData.length === 0) {
           setError('No shower data available');
           return;
         }
+        
         // Sort showers by startTime in descending order (most recent first)
         const sortedShowers = showerData.sort((a, b) => {
           if (a.startTime === 'Unknown' || b.startTime === 'Unknown') return 0;
           return new Date(b.startTime) - new Date(a.startTime);
         });
         
-        // Fetch detailed data for each shower
-        const showersWithDetails = await Promise.all(
-          sortedShowers.map(async (shower) => {
-            try {
-              const details = await fetchShowerData(shower.id);
-              return {
-                ...shower,
-                temperatureReadings: details.temperatureReadings
-              };
-            } catch (err) {
-              console.error(`Error loading details for shower ${shower.id}:`, err);
-              return shower;
-            }
-          })
-        );
+        setShowers(sortedShowers);
         
         // Load user profiles for all showers
-        const profiles = {};
-        for (const shower of showersWithDetails) {
-          console.log('Processing shower:', shower.id, 'with userID:', shower.userID);
-          if (shower.userID && !profiles[shower.userID]) {
+        const newProfiles = {};
+        for (const shower of sortedShowers) {
+          if (shower.userID && !newProfiles[shower.userID]) {
             try {
               const profile = await getUserProfile(shower.userID);
-              console.log('Loaded profile for userID:', shower.userID, profile);
-              profiles[shower.userID] = profile;
+              if (isMounted) {
+                newProfiles[shower.userID] = profile;
+              }
             } catch (err) {
               console.error(`Error loading profile for user ${shower.userID}:`, err);
-              profiles[shower.userID] = { profilePicture: '/profilePictures/default.png' };
+              if (isMounted) {
+                newProfiles[shower.userID] = { profilePicture: '/profilePictures/default.png' };
+              }
             }
           }
         }
-        console.log('Final profiles object:', profiles);
         
-        // Only set selectedShower if it's null and we have showers
-        if (!selectedShower && showersWithDetails.length > 0) {
-          setSelectedShower(String(showersWithDetails[0].id));
+        if (isMounted) {
+          setProfiles(newProfiles);
+          // Only set selectedShower if it's null and we have showers
+          if (!selectedShower && sortedShowers.length > 0) {
+            setSelectedShower(String(sortedShowers[0].id));
+          }
         }
       } catch (err) {
-        setError('Failed to load showers');
-        console.error('Error loading showers:', err);
+        if (isMounted) {
+          setError('Failed to load showers');
+          console.error('Error loading showers:', err);
+        }
       }
     };
 
     loadShowers();
-  }, [selectedShower]);
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Remove selectedShower from dependencies
 
   // Fetch selected shower data
   useEffect(() => {
+    let isMounted = true;
     const loadShowerData = async () => {
       if (!selectedShower) return;
 
       try {
         setError(null);
         const showerData = await fetchShowerData(selectedShower);
+        
+        if (!isMounted) return;
         
         if (showerData) {
           // Get the most recent temperature reading
@@ -109,59 +112,63 @@ const App = () => {
           setError('Invalid shower data format');
         }
       } catch (err) {
-        setError('Failed to load shower data');
-        console.error('Error loading shower data:', err);
+        if (isMounted) {
+          setError('Failed to load shower data');
+          console.error('Error loading shower data:', err);
+        }
       }
     };
 
     loadShowerData();
+    return () => {
+      isMounted = false;
+    };
   }, [selectedShower]);
 
-  const getTemperatureMessage = (temp) => {
+  const getTemperatureMessage = useCallback((temp) => {
     if (!temp) return "Waiting for temperature data...";
     if (temp < 50) return "BRRR! That's cold enough to freeze your thoughts!";
     if (temp < 60) return "Chilly! But that's what makes you stronger! 💪";
     if (temp < 70) return "Getting warmer! Keep pushing!";
     return "Hot stuff! You're crushing it! 🔥";
-  };
+  }, []);
 
-  const formatChartTooltip = (timestamp) => {
+  const formatChartTooltip = useCallback((timestamp) => {
     const seconds = parseInt(timestamp);
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}m ${remainingSeconds}s`;
-  };
+  }, []);
 
-  const shareToTwitter = () => {
+  const shareToTwitter = useCallback(() => {
     const message = `🚿 Just took a cold shower at ${currentTemp}°F! ${getTemperatureMessage(currentTemp)} Check out my cold shower journey!`;
     const url = window.location.href;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(url)}`, '_blank');
-  };
+  }, [currentTemp, getTemperatureMessage]);
 
-  const shareToInstagram = () => {
-    // Instagram doesn't have a direct share URL, so we'll copy to clipboard
+  const shareToInstagram = useCallback(() => {
     const message = `🚿 Cold shower at ${currentTemp}°F! ${getTemperatureMessage(currentTemp)}`;
     navigator.clipboard.writeText(message);
     alert('Share text copied to clipboard! You can now paste it in your Instagram story or post.');
-  };
+  }, [currentTemp, getTemperatureMessage]);
 
-  const shareViaEmail = () => {
+  const shareViaEmail = useCallback(() => {
     const subject = 'My Cold Shower Journey';
     const body = `I just took a cold shower at ${currentTemp}°F! ${getTemperatureMessage(currentTemp)}\n\nCheck out my cold shower journey: ${window.location.href}`;
     window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
-  };
+  }, [currentTemp, getTemperatureMessage]);
 
-  const shareToWhatsApp = () => {
+  const shareToWhatsApp = useCallback(() => {
     const message = `🚿 Just took a cold shower at ${currentTemp}°F! ${getTemperatureMessage(currentTemp)} Check out my cold shower journey: ${window.location.href}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-  };
+  }, [currentTemp, getTemperatureMessage]);
 
-  const shareToTelegram = () => {
+  const shareToTelegram = useCallback(() => {
     const message = `🚿 Just took a cold shower at ${currentTemp}°F! ${getTemperatureMessage(currentTemp)} Check out my cold shower journey: ${window.location.href}`;
     window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(message)}`, '_blank');
-  };
+  }, [currentTemp, getTemperatureMessage]);
 
-  const formatShowerButton = (shower) => {
+  const formatShowerButton = useCallback((shower) => {
     let formattedDate = 'Unknown time';
     if (shower.startTime !== 'Unknown') {
       const date = new Date(shower.startTime);
@@ -244,14 +251,14 @@ const App = () => {
         </div>
       </button>
     );
-  };
+  }, [selectedShower, getTemperatureClass]);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setShowModal(false);
     setModalData(null);
-  };
+  }, []);
 
-  const formatModalTime = (startTime) => {
+  const formatModalTime = useCallback((startTime) => {
     if (!startTime || startTime === 'Unknown') return 'Unknown';
     const date = new Date(startTime);
     return date.toLocaleString('en-US', {
@@ -263,14 +270,14 @@ const App = () => {
       minute: '2-digit',
       hour12: true
     });
-  };
+  }, []);
 
-  const formatModalDuration = (seconds) => {
+  const formatModalDuration = useCallback((seconds) => {
     if (!seconds) return 'Unknown';
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}m ${remainingSeconds}s`;
-  };
+  }, []);
 
   return (
     <AuthProvider>
@@ -279,7 +286,6 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>

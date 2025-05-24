@@ -23,6 +23,7 @@ const Navbar = () => {
   const handleSignOut = async () => {
     try {
       await signOutUser();
+      setIsMobileMenuOpen(false);
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -32,12 +33,16 @@ const Navbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="navbar-container">
           <div className="navbar-brand">
-            <Link to="/" className="navbar-logo">
+            <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
               Shiver
             </Link>
           </div>
@@ -47,15 +52,18 @@ const Navbar = () => {
           </button>
 
           <div className={`navbar-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
-            <Link to="/" className={`navbar-link ${location.pathname === '/' ? 'active' : ''}`}>
+            <Link to="/" className={`navbar-link ${location.pathname === '/' ? 'active' : ''}`} onClick={closeMobileMenu}>
               Home
             </Link>
-            <Link to="/dashboard" className="navbar-link">
-              Dashboard
+            <Link to="/profile" className={`navbar-link ${location.pathname === '/profile' ? 'active' : ''}`} onClick={closeMobileMenu}>
+              Profile
             </Link>
             <button 
               className="navbar-link" 
-              onClick={() => setIsAboutModalOpen(true)}
+              onClick={() => {
+                setIsAboutModalOpen(true);
+                closeMobileMenu();
+              }}
               style={{ background: 'none', border: 'none', cursor: 'pointer' }}
             >
               About
@@ -75,7 +83,7 @@ const Navbar = () => {
                 </button>
               </div>
             ) : (
-              <a href="https://buy.stripe.com/3cs4hC78vd0ib6w7st" className="login-button" target="_blank" rel="noopener noreferrer">
+              <a href="https://buy.stripe.com/3cs4hC78vd0ib6w7st" className="login-button" target="_blank" rel="noopener noreferrer" onClick={closeMobileMenu}>
                 Pre-Order
               </a>
             )}
@@ -83,7 +91,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <AboutModal 
+      <AboutModal
         isOpen={isAboutModalOpen}
         onClose={() => setIsAboutModalOpen(false)}
       />

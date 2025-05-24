@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue } from "firebase/database"; // ✅ Add missing imports
+import { getDatabase, ref, get } from "firebase/database";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 
 // Your web app's Firebase configuration
@@ -41,4 +41,16 @@ const signOutUser = async () => {
   }
 };
 
-export { database, ref, onValue, auth, signInWithGoogle, signOutUser };
+// Database functions
+const fetchData = async (path) => {
+  try {
+    const dataRef = ref(database, path);
+    const snapshot = await get(dataRef);
+    return snapshot.val();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export { database, ref, get, auth, signInWithGoogle, signOutUser, fetchData };
