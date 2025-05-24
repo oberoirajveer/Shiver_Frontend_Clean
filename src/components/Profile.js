@@ -127,6 +127,8 @@ const Calendar = React.memo(({ showers }) => {
   );
 });
 
+Calendar.displayName = 'Calendar';
+
 const ColdShowerStreak = ({ showers }) => {
   const streak = 10; // Hard coded streak value
 
