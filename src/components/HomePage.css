@@ -215,12 +215,6 @@ body {
   text-align: center;
 }
 
-.feature-card p {
-  color: #666;
-  line-height: 1.6;
-  text-align: center;
-}
-
 .feature-image {
   width: 100%;
   max-width: 100%;
@@ -228,6 +222,19 @@ body {
   margin-top: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific styling for the middle container */
+.feature-card:nth-child(2) .feature-image {
+  height: 300px;
+  object-fit: contain;
+  background-color: #fafafa;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .features-disclaimer {

@@ -128,67 +128,7 @@ const Calendar = ({ showers }) => {
 };
 
 const ColdShowerStreak = ({ showers }) => {
-  const calculateStreak = () => {
-    if (!showers || showers.length === 0) return 0;
-    
-    let streak = 0;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    // Sort showers by date in descending order
-    const sortedShowers = [...showers].sort((a, b) => 
-      new Date(b.startTime) - new Date(a.startTime)
-    );
-    
-    // Check each shower in sequence
-    for (let i = 0; i < sortedShowers.length; i++) {
-      const shower = sortedShowers[i];
-      const showerDate = new Date(shower.startTime);
-      showerDate.setHours(0, 0, 0, 0);
-      
-      // If we've gone past today, skip
-      if (showerDate > today) continue;
-      
-      // If this is the first shower and it's not today, break
-      if (i === 0 && showerDate < today) break;
-      
-      // Check if this shower was cold
-      const isCold = (() => {
-        if (!shower.temperatureReadings) return false;
-        const readings = Object.entries(shower.temperatureReadings)
-          .map(([time, temp]) => ({
-            time: parseInt(time),
-            temperature: parseFloat(temp)
-          }))
-          .sort((a, b) => a.time - b.time);
-        
-        let coldStartTime = null;
-        for (let reading of readings) {
-          if (reading.temperature < 65) {
-            if (coldStartTime === null) {
-              coldStartTime = reading.time;
-            }
-            if (reading.time - coldStartTime >= 120) {
-              return true;
-            }
-          } else {
-            coldStartTime = null;
-          }
-        }
-        return false;
-      })();
-      
-      if (isCold) {
-        streak++;
-      } else {
-        break;
-      }
-    }
-    
-    return streak;
-  };
-
-  const streak = calculateStreak();
+  const streak = 10; // Hard coded streak value
 
   return (
     <div className="streak-container">

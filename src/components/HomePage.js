@@ -26,9 +26,9 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
-          <h1>A better shower starts with the Shiver Sensor</h1>
+          <h1>Build Your Cold Shower Habit.</h1>
           <p className="hero-subtitle">
-            The Shiver Sensor is the only device that seemlessly tracks your showers— allowing you to unlock better skin, hair, and all round health. Whether you&apos;re ready to build a cold shower habit or reduce excess hot water exposure, the Shiver Sensor is for you.
+            Consistent cold exposure is a powerful way to improve your health. Take the first step with the Shiver Sensor.
           </p>
           <div className="hero-cta">
             <a href="https://buy.stripe.com/3cs4hC78vd0ib6w7st" className="cta-button secondary" target="_blank" rel="noopener noreferrer">
@@ -67,7 +67,7 @@ const HomePage = () => {
         <div className="features-grid">
           <div className="feature-card">
             <h3 className="feature-title">Shower Temperatures</h3>
-            <p>Dermatologists recommend shower temperatures to be below 105°F. Are you staying within that range?</p>
+            <p>A cold shower is typically between 55-65°F. Are you within that range?</p>
             <img 
               src={temperatureStats}
               alt="Temperature Statistics" 
@@ -75,8 +75,8 @@ const HomePage = () => {
             />
           </div>
           <div className="feature-card">
-            <h3>How hot was the water when I washed my hair? What about my face?</h3>
-            <p>Dig into the data to ensure that the water temperature was right, at different times of your shower, based on your specific needs</p>
+            <h3>Are your showers a mix of hot and cold water? We got you covered.</h3>
+            <p>Dig into the data to ensure that the water temperature was right, at different times of your shower, based on your cold shower goals.</p>
             <img 
               src={temperatureGraph}
               alt="Temperature Graph" 
@@ -84,8 +84,8 @@ const HomePage = () => {
             />
           </div>
           <div className="feature-card">
-            <h3>Birds Eye View of Your Temperature Goals</h3>
-            <p>Building a cold shower habit? Trying to reduce your heat exposure? We&apos;ve got you covered.</p>
+            <h3>Streaks</h3>
+            <p>Set a goal and build a streak. We&apos;ll help you track your progress.</p>
             <img 
               src={weeklyGoals}
               alt="Weekly Goals View" 
