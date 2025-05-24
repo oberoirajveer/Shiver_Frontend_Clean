@@ -245,10 +245,64 @@ const Profile = () => {
   const getPageNumbers = () => {
     const totalPages = Math.ceil(showers.length / showersPerPage);
     const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pageNumbers.push(i);
+    
+    // Always show first page
+    pageNumbers.push(1);
+    
+    // Show current page and one before/after if they exist
+    if (currentPage > 2) {
+      pageNumbers.push(currentPage - 1);
     }
-    return pageNumbers;
+    if (currentPage !== 1 && currentPage !== totalPages) {
+      pageNumbers.push(currentPage);
+    }
+    if (currentPage < totalPages - 1) {
+      pageNumbers.push(currentPage + 1);
+    }
+    
+    // Always show last page if it's different from the last number
+    if (totalPages > 1 && !pageNumbers.includes(totalPages)) {
+      pageNumbers.push(totalPages);
+    }
+    
+    // Sort and remove duplicates
+    return [...new Set(pageNumbers)].sort((a, b) => a - b);
+  };
+
+  const renderPagination = () => {
+    const totalPages = Math.ceil(showers.length / showersPerPage);
+    const pageNumbers = getPageNumbers();
+    
+    return (
+      <div className="pagination">
+        {pageNumbers.map((number, index) => {
+          // Add ellipsis between non-consecutive numbers
+          const showEllipsis = index > 0 && pageNumbers[index] - pageNumbers[index - 1] > 1;
+          
+          return (
+            <React.Fragment key={number}>
+              {showEllipsis && (
+                <span className="pagination-ellipsis">...</span>
+              )}
+              <button
+                className={`page-button ${currentPage === number ? 'active' : ''}`}
+                onClick={() => setCurrentPage(number)}
+              >
+                {number}
+              </button>
+            </React.Fragment>
+          );
+        })}
+        {currentPage < totalPages && (
+          <button
+            className="page-button next-button"
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+          </button>
+        )}
+      </div>
+    );
   };
 
   const getCurrentShowers = () => {
@@ -331,19 +385,7 @@ const Profile = () => {
               )}
             </div>
             
-            {!loading && showers.length > 0 && (
-              <div className="pagination">
-                {getPageNumbers().map(number => (
-                  <button
-                    key={number}
-                    className={`page-button ${currentPage === number ? 'active' : ''}`}
-                    onClick={() => setCurrentPage(number)}
-                  >
-                    {number}
-                  </button>
-                ))}
-              </div>
-            )}
+            {!loading && showers.length > 0 && renderPagination()}
           </div>
         </div>
       </div>
