@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { fetchShowers } from '../services/api';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './Profile.css';
 
-const Calendar = ({ showers }) => {
+const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
-  const getDaysInMonth = (date) => {
+  const getDaysInMonth = useCallback((date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  };
+  }, []);
 
-  const getFirstDayOfMonth = (date) => {
+  const getFirstDayOfMonth = useCallback((date) => {
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  };
+  }, []);
 
-  const getShowerForDate = (day) => {
+  const getShowerForDate = useCallback((day) => {
     const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     return showers.find(shower => {
       const showerDate = new Date(shower.startTime);
@@ -23,9 +23,9 @@ const Calendar = ({ showers }) => {
              showerDate.getMonth() === date.getMonth() &&
              showerDate.getFullYear() === date.getFullYear();
     });
-  };
+  }, [currentDate, showers]);
 
-  const formatTooltipDate = (day) => {
+  const formatTooltipDate = useCallback((day) => {
     const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -33,7 +33,7 @@ const Calendar = ({ showers }) => {
       month: 'long',
       day: 'numeric'
     });
-  };
+  }, [currentDate]);
 
   const getDotColor = (shower) => {
     if (!shower) return null;
@@ -125,7 +125,7 @@ const Calendar = ({ showers }) => {
       </div>
     </div>
   );
-};
+});
 
 const ColdShowerStreak = ({ showers }) => {
   const streak = 10; // Hard coded streak value
@@ -149,20 +149,23 @@ const Profile = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const showersPerPage = 7;
 
-  const getTemperatureColor = (temp) => {
+  const getTemperatureColor = useCallback((temp) => {
     if (!temp) return '#90caf9';
     if (temp < 50) return '#2196f3';
     if (temp < 60) return '#4fc3f7';
     if (temp < 70) return '#81d4fa';
     return '#ff7043';
-  };
+  }, []);
 
   useEffect(() => {
+    let isMounted = true;
     const loadShowers = async () => {
       try {
         setLoading(true);
         setError(null);
         const showerData = await fetchShowers(currentUser?.uid);
+        
+        if (!isMounted) return;
         
         if (!showerData || showerData.length === 0) {
           setError('No shower data available');
@@ -175,20 +178,26 @@ const Profile = () => {
           return new Date(b.startTime) - new Date(a.startTime);
         });
         
-        console.log('Loaded showers:', sortedShowers); // Debug log
         setShowers(sortedShowers);
       } catch (err) {
-        setError('Failed to load showers');
-        console.error('Error loading showers:', err);
+        if (isMounted) {
+          setError('Failed to load showers');
+          console.error('Error loading showers:', err);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     loadShowers();
+    return () => {
+      isMounted = false;
+    };
   }, [currentUser]);
 
-  const formatDate = (startTime) => {
+  const formatDate = useCallback((startTime) => {
     if (!startTime || startTime === 'Unknown') return 'Unknown';
     const date = new Date(startTime);
     return date.toLocaleString('en-US', {
@@ -198,7 +207,7 @@ const Profile = () => {
       minute: '2-digit',
       hour12: true
     });
-  };
+  }, []);
 
   const formatDuration = (seconds) => {
     if (!seconds) return 'Unknown';
