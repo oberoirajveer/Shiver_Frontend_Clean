@@ -28,7 +28,7 @@ const HomePage = () => {
         <div className="hero-content">
           <h1>Build Your Cold Shower Habit.</h1>
           <p className="hero-subtitle">
-            Consistent cold exposure is a powerful way to improve your health. Take the first step with the Shiver Sensor.
+            Consistent cold exposure is a powerful way to improve your health. Set your goals and track your progress with the Shiver Sensor.
           </p>
           <div className="hero-cta">
             <a href="https://buy.stripe.com/3cs4hC78vd0ib6w7st" className="cta-button secondary" target="_blank" rel="noopener noreferrer">
