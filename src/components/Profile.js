@@ -130,7 +130,72 @@ const Calendar = React.memo(({ showers }) => {
 Calendar.displayName = 'Calendar';
 
 const ColdShowerStreak = ({ showers }) => {
-  const streak = 10; // Hard coded streak value
+  const calculateStreak = () => {
+    if (!showers || showers.length === 0) return 0;
+
+    // Sort showers by date, most recent first
+    const sortedShowers = [...showers].sort((a, b) => 
+      new Date(b.startTime) - new Date(a.startTime)
+    );
+
+    let streak = 0;
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Check each day backwards from today
+    let shouldContinue = true;
+    while (shouldContinue) {
+      // Find a shower for the current date
+      const showerForDay = sortedShowers.find(shower => {
+        const showerDate = new Date(shower.startTime);
+        showerDate.setHours(0, 0, 0, 0);
+        return showerDate.getTime() === currentDate.getTime();
+      });
+
+      if (!showerForDay) {
+        shouldContinue = false;
+        continue;
+      }
+
+      // Check if the shower was cold (temperature < 65°F for at least 2 minutes)
+      const wasCold = showerForDay.temperatureReadings && (() => {
+        const readings = Object.entries(showerForDay.temperatureReadings)
+          .map(([time, temp]) => ({
+            time: parseInt(time),
+            temperature: parseFloat(temp)
+          }))
+          .sort((a, b) => a.time - b.time);
+
+        let coldStartTime = null;
+        for (let i = 0; i < readings.length; i++) {
+          const reading = readings[i];
+          if (reading.temperature < 65) {
+            if (coldStartTime === null) {
+              coldStartTime = reading.time;
+            }
+            if (reading.time - coldStartTime >= 120) { // 2 minutes = 120 seconds
+              return true;
+            }
+          } else {
+            coldStartTime = null;
+          }
+        }
+        return false;
+      })();
+
+      if (!wasCold) {
+        shouldContinue = false;
+        continue;
+      }
+      
+      streak++;
+      currentDate.setDate(currentDate.getDate() - 1);
+    }
+
+    return streak;
+  };
+
+  const streak = calculateStreak();
 
   return (
     <div className="streak-container">
@@ -316,6 +381,9 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-content">
           <div className="profile-section">
+            <div className="demo-notice">
+              <p>Welcome to the iShiver Demo Dashboard! This preview updates with real data from Shiver Sensors in the wild.</p>
+            </div>
             <h2>Recent Showers</h2>
             <div className="recent-showers-list">
               {loading ? (
