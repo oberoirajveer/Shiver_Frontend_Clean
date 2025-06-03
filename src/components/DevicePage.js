@@ -464,11 +464,10 @@ const DevicePage = () => {
       </div>
       <div className="right-container">
         <div className="profile-header">
-          <div 
+          <img 
+            src={deviceId === '15681139' ? declanPfp : rajveerPfp}
+            alt="Profile" 
             className="profile-picture"
-            style={{ 
-              backgroundImage: `url(${deviceId === '15681139' ? declanPfp : rajveerPfp})`
-            }}
           />
         </div>
         <ColdShowerStreak showers={showers} />
