@@ -4,6 +4,7 @@ import { fetchData } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
 import declanPfp from '../assets/images/declanpfp.jpg';
+import rajveerPfp from '../assets/images/pfp.jpeg';
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -459,7 +460,11 @@ const DevicePage = () => {
       </div>
       <div className="right-container">
         <div className="profile-header">
-          <img src={declanPfp} alt="Declan" className="profile-picture" />
+          <img 
+            src={deviceId === '15681139' ? declanPfp : rajveerPfp} 
+            alt={deviceId === '15681139' ? "Declan" : "Rajveer"} 
+            className="profile-picture" 
+          />
         </div>
         <ColdShowerStreak showers={showers} />
         <Calendar showers={showers} />
