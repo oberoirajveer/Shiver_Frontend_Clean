@@ -5,10 +5,6 @@ import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tool
 import './DevicePage.css';
 import declanPfp from '../assets/images/declanpfp.jpg';
 
-console.log('Declan profile picture path:', declanPfp);
-console.log('Current deviceId:', deviceId);
-console.log('Selected image path:', deviceId === '15681139' ? declanPfp : declanPfp);
-
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
@@ -226,7 +222,10 @@ const ColdShowerStreak = ({ showers }) => {
 
 const DevicePage = () => {
   const { deviceId } = useParams();
+  console.log('Declan profile picture path:', declanPfp);
   console.log('Current deviceId:', deviceId);
+  console.log('Selected image path:', declanPfp);
+
   const [showers, setShowers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
