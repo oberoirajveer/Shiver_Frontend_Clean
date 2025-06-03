@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { fetchData } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
-import declanPfp from '../assets/images/declanpfp.jpg';
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -222,9 +221,7 @@ const ColdShowerStreak = ({ showers }) => {
 
 const DevicePage = () => {
   const { deviceId } = useParams();
-  console.log('Declan profile picture path:', declanPfp);
   console.log('Current deviceId:', deviceId);
-  console.log('Selected image path:', declanPfp);
 
   const [showers, setShowers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -464,7 +461,7 @@ const DevicePage = () => {
       <div className="right-container">
         <div className="profile-header">
           <img 
-            src={declanPfp}
+            src="/declanpfp.jpg"
             alt="Declan's Profile" 
             className="profile-picture"
             onError={(e) => {
