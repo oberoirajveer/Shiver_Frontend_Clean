@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { fetchShowers } from '../services/api';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchData } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
-import './Profile.css';
+import './DevicePage.css';
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -38,7 +38,6 @@ const Calendar = React.memo(({ showers }) => {
   const getDotColor = (shower) => {
     if (!shower) return null;
     
-    // Check if there are temperature readings
     if (shower.temperatureReadings) {
       const readings = Object.entries(shower.temperatureReadings)
         .map(([time, temp]) => ({
@@ -47,7 +46,6 @@ const Calendar = React.memo(({ showers }) => {
         }))
         .sort((a, b) => a.time - b.time);
 
-      // Check for continuous periods of cold temperature
       let coldStartTime = null;
       for (let i = 0; i < readings.length; i++) {
         const reading = readings[i];
@@ -55,9 +53,8 @@ const Calendar = React.memo(({ showers }) => {
           if (coldStartTime === null) {
             coldStartTime = reading.time;
           }
-          // If we have a cold period of at least 2 minutes (120 seconds)
           if (reading.time - coldStartTime >= 120) {
-            return '#2196f3';  // Cold: deep blue
+            return '#2196f3';
           }
         } else {
           coldStartTime = null;
@@ -65,11 +62,10 @@ const Calendar = React.memo(({ showers }) => {
       }
     }
 
-    // If no cold period found, use average temperature for coloring
     const temp = shower.avgTemp;
-    if (temp < 70) return '#4fc3f7';  // Cool: medium blue
-    if (temp < 80) return '#81d4fa';  // Warm: light blue
-    return '#ff7043';                  // Hot: orange/red
+    if (temp < 70) return '#4fc3f7';
+    if (temp < 80) return '#81d4fa';
+    return '#ff7043';
   };
 
   const renderCalendar = () => {
@@ -77,12 +73,10 @@ const Calendar = React.memo(({ showers }) => {
     const firstDay = getFirstDayOfMonth(currentDate);
     const days = [];
     
-    // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="calendar-day empty"></div>);
     }
     
-    // Add days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const shower = getShowerForDate(day);
       const dotColor = getShowerForDate(day) ? getDotColor(shower) : '#e0e0e0';
@@ -149,64 +143,36 @@ const ColdShowerStreak = ({ showers }) => {
       }
 
       const wasCold = showersForDay.some(shower => {
-        // Early exit if no temperature data
         if (!shower.temperatureReadings) {
-          console.log('[Debug] Shower has no temperature readings');
           return false;
         }
         
-        console.log('[Debug] Raw temperature readings:', shower.temperatureReadings);
-        
-        // Parse and clean the temperature readings
         const readings = Object.entries(shower.temperatureReadings)
-          .map(([time, temp]) => {
-            const parsedTemp = parseFloat(temp);
-            const parsedTime = parseInt(time);
-            console.log('[Debug] Parsing reading:', { time, temp, parsedTime, parsedTemp });
-            return {
-              time: parsedTime,
-              temperature: parsedTemp
-            };
-          })
-          // Filter out invalid readings (NaN values)
+          .map(([time, temp]) => ({
+            time: parseInt(time),
+            temperature: parseFloat(temp)
+          }))
           .filter(reading => !isNaN(reading.temperature) && !isNaN(reading.time))
-          // Sort by time to ensure chronological order
           .sort((a, b) => a.time - b.time);
 
-        console.log('[Debug] Processed readings:', readings.length, 'valid readings');
-        console.log('[Debug] Sample readings:', readings.slice(0, 5));
-        
-        // Need at least 2 readings to calculate duration
         if (readings.length < 2) {
-          console.log('[Debug] Not enough valid readings (need at least 2)');
           return false;
         }
 
-        // METHOD 1: Check if we have 120+ cold data points
         const coldDataPoints = readings.filter(reading => reading.temperature < 65).length;
-        console.log('[Debug] Cold data points:', coldDataPoints, 'out of', readings.length);
         
-        // If we have 120+ cold readings, it's automatically a cold shower
         if (coldDataPoints >= 120) {
-          console.log('[Debug] Cold shower: 120+ cold data points');
           return true;
         }
 
-        // METHOD 2: Check if 50%+ of duration was cold
-        // Calculate total shower duration
         const startTime = readings[0].time;
         const endTime = readings[readings.length - 1].time;
         const totalDuration = endTime - startTime;
         
-        console.log('[Debug] Shower duration:', totalDuration, 'seconds (from', startTime, 'to', endTime, ')');
-        
-        // Duration must be positive and reasonable (at least 30 seconds)
         if (totalDuration <= 30) {
-          console.log('[Debug] Duration too short or invalid, skipping shower');
           return false;
         }
         
-        // Calculate cold duration using interpolation between readings
         let coldDuration = 0;
         
         for (let i = 0; i < readings.length - 1; i++) {
@@ -214,52 +180,27 @@ const ColdShowerStreak = ({ showers }) => {
           const nextReading = readings[i + 1];
           const segmentDuration = nextReading.time - currentReading.time;
           
-          // If current reading is cold, count the time until next reading
           if (currentReading.temperature < 67) {
             coldDuration += segmentDuration;
-            console.log('[Debug] Cold segment:', {
-              start: currentReading.time,
-              end: nextReading.time,
-              duration: segmentDuration,
-              temperature: currentReading.temperature
-            });
           }
         }
         
-        // Handle the last reading - estimate it represents the average time between readings
         const avgTimeBetweenReadings = totalDuration / (readings.length - 1);
         if (readings[readings.length - 1].temperature < 65) {
           coldDuration += avgTimeBetweenReadings;
-          console.log('[Debug] Last reading was cold, adding', avgTimeBetweenReadings, 'seconds');
         }
 
-        // Calculate percentage of cold time
         const coldPercentage = (coldDuration / totalDuration) * 100;
-        console.log('[Debug] Cold duration:', coldDuration, 'seconds out of', totalDuration);
-        console.log('[Debug] Cold percentage:', coldPercentage.toFixed(1) + '%');
-
-        // Check if it meets the 50% threshold
         const isColdByDuration = coldPercentage >= 50;
         
-        // Final determination: either 120+ data points OR 50%+ duration
-        const isCold = coldDataPoints >= 120 || isColdByDuration;
-        
-        console.log('[Debug] Is this shower cold?', {
-          coldDataPoints: coldDataPoints >= 120,
-          coldDuration: isColdByDuration,
-          finalResult: isCold
-        });
-        
-        return isCold;
+        return coldDataPoints >= 120 || isColdByDuration;
       });
 
       if (!wasCold) {
-        console.log('[Debug] No cold showers found for this day, breaking streak');
         shouldContinue = false;
         continue;
       }
 
-      console.log('[Debug] Found cold shower, incrementing streak');
       streak++;
       currentDate.setDate(currentDate.getDate() - 1);
     }
@@ -278,8 +219,8 @@ const ColdShowerStreak = ({ showers }) => {
   );
 };
 
-const Profile = () => {
-  const { currentUser } = useAuth();
+const DevicePage = () => {
+  const { deviceId } = useParams();
   const [showers, setShowers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -302,20 +243,19 @@ const Profile = () => {
       try {
         setLoading(true);
         setError(null);
-        console.log('[Debug] Profile: Starting to fetch showers');
-        const showerData = await fetchShowers();
-        console.log('[Debug] Profile: Received shower data:', showerData);
-        
+        const data = await fetchData(`/${deviceId}/showers`);
         if (!isMounted) return;
         
-        if (!showerData || showerData.length === 0) {
-          console.log('[Debug] Profile: No shower data available');
+        if (!data) {
           setError('No shower data available');
           return;
         }
         
-        // Sort showers by startTime in descending order (most recent first), handling both ISO and non-ISO formats
-        const sortedShowers = showerData
+        const showerArray = Object.entries(data)
+          .map(([id, shower]) => ({
+            id,
+            ...shower
+          }))
           .filter(shower => shower.startTime && shower.startTime !== 'Unknown')
           .sort((a, b) => {
             const dateA = new Date(a.startTime.includes('T') ? a.startTime : a.startTime + 'Z');
@@ -323,11 +263,9 @@ const Profile = () => {
             return dateB.getTime() - dateA.getTime();
           });
         
-        console.log('[Debug] Profile: Sorted showers:', sortedShowers);
-        setShowers(sortedShowers);
+        setShowers(showerArray);
       } catch (err) {
         if (isMounted) {
-          console.error('[Debug] Profile: Error loading showers:', err);
           setError('Failed to load showers');
         }
       } finally {
@@ -341,7 +279,7 @@ const Profile = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [deviceId]);
 
   const formatDate = useCallback((startTime) => {
     if (!startTime || startTime === 'Unknown') return 'Unknown';
@@ -362,20 +300,6 @@ const Profile = () => {
     return `${minutes}m ${remainingSeconds}s`;
   };
 
-  const formatModalTime = (startTime) => {
-    if (!startTime || startTime === 'Unknown') return 'Unknown';
-    const date = new Date(startTime);
-    return date.toLocaleString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-  };
-
   const handleShowerClick = (shower) => {
     setSelectedShower(shower);
     setShowModal(true);
@@ -390,10 +314,8 @@ const Profile = () => {
     const totalPages = Math.ceil(showers.length / showersPerPage);
     const pageNumbers = [];
     
-    // Always show first page
     pageNumbers.push(1);
     
-    // Show current page and one before/after if they exist
     if (currentPage > 2) {
       pageNumbers.push(currentPage - 1);
     }
@@ -404,12 +326,10 @@ const Profile = () => {
       pageNumbers.push(currentPage + 1);
     }
     
-    // Always show last page if it's different from the last number
     if (totalPages > 1 && !pageNumbers.includes(totalPages)) {
       pageNumbers.push(totalPages);
     }
     
-    // Sort and remove duplicates
     return [...new Set(pageNumbers)].sort((a, b) => a - b);
   };
 
@@ -420,7 +340,6 @@ const Profile = () => {
     return (
       <div className="pagination">
         {pageNumbers.map((number, index) => {
-          // Add ellipsis between non-consecutive numbers
           const showEllipsis = index > 0 && pageNumbers[index] - pageNumbers[index - 1] > 1;
           
           return (
@@ -461,7 +380,7 @@ const Profile = () => {
         <div className="profile-content">
           <div className="profile-section">
             <div className="demo-notice">
-              <p>Welcome to the iShiver Demo Dashboard! This preview updates with real data from Shiver Sensors in the wild.</p>
+              <p>Device {deviceId} Shower Data</p>
             </div>
             <h2>Recent Showers</h2>
             <div className="recent-showers-list">
@@ -541,7 +460,6 @@ const Profile = () => {
         <Calendar showers={showers} />
       </div>
 
-      {/* Modal for expanded graph view */}
       {showModal && selectedShower && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
@@ -599,4 +517,4 @@ const Profile = () => {
   );
 };
 
-export default Profile; 
+export default DevicePage; 

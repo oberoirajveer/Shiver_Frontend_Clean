@@ -4,37 +4,37 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api
 const showerCache = new Map();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-export const fetchShowers = async (userId = null) => {
+export const fetchShowers = async () => {
   const startTime = performance.now();
   try {
-    // Check cache first
-    const cacheKey = userId || 'all';
-    const cachedData = showerCache.get(cacheKey);
-    if (cachedData && Date.now() - cachedData.timestamp < CACHE_DURATION) {
-      const endTime = performance.now();
-      console.log(`[Performance] Cache hit! Data loaded in ${(endTime - startTime).toFixed(2)}ms`);
-      return cachedData.data;
-    }
+    // Comment out or remove the cache check for debugging:
+    // const cachedData = showerCache.get('all');
+    // if (cachedData && Date.now() - cachedData.timestamp < CACHE_DURATION) {
+    //   const endTime = performance.now();
+    //   console.log(`[Performance] Cache hit! Data loaded in ${(endTime - startTime).toFixed(2)}ms`);
+    //   return cachedData.data;
+    // }
 
-    console.log('[Performance] Cache miss, fetching from API...');
-    console.log('Environment:', process.env.NODE_ENV);
-    console.log('API_BASE_URL:', API_BASE_URL);
+    console.log('[Debug] Cache miss, fetching from API...');
+    console.log('[Debug] Environment:', process.env.NODE_ENV);
+    console.log('[Debug] API_BASE_URL:', API_BASE_URL);
     
-    // Build query string if userId is provided
-    const queryString = userId ? `?userId=${userId}` : '';
-    const url = `${API_BASE_URL}/data${queryString}`;
-    console.log('Full request URL:', url);
+    const url = `${API_BASE_URL}/data`;
+    console.log('[Debug] Full request URL:', url);
     
     const response = await fetch(url);
-    console.log('Response status:', response.status);
+    console.log('[Debug] Response status:', response.status);
     
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Error response:', errorText);
+      console.error('[Debug] Error response:', errorText);
       throw new Error(`Failed to fetch showers: ${response.status} ${response.statusText}`);
     }
     
     const data = await response.json();
+    console.log('[Debug] Raw data received:', data);
+    console.log('[Debug] Number of showers received:', data.length);
+    
     const endTime = performance.now();
     console.log(`[Performance] API request completed in ${(endTime - startTime).toFixed(2)}ms`);
     
@@ -50,8 +50,11 @@ export const fetchShowers = async (userId = null) => {
       temperatureReadings: shower.temperatureReadings || {}
     }));
 
+    console.log('[Debug] Processed data:', processedData);
+    console.log('[Debug] Number of processed showers:', processedData.length);
+
     // Cache the processed data
-    showerCache.set(cacheKey, {
+    showerCache.set('all', {
       data: processedData,
       timestamp: Date.now()
     });
@@ -60,7 +63,7 @@ export const fetchShowers = async (userId = null) => {
   } catch (error) {
     const endTime = performance.now();
     console.error(`[Performance] Error occurred after ${(endTime - startTime).toFixed(2)}ms`);
-    console.error('Error details:', {
+    console.error('[Debug] Error details:', {
       message: error.message,
       stack: error.stack,
       type: error.name
