@@ -458,7 +458,15 @@ const DevicePage = () => {
       <div className="right-container">
         <ColdShowerStreak showers={showers} />
         <div className="declan-image-container">
-          <img src="/declan.jpg" alt="Declan" className="declan-image" />
+          <img 
+            src={`${process.env.PUBLIC_URL || ''}/images/declan.jpg`} 
+            alt="Declan" 
+            className="declan-image"
+            onError={(e) => {
+              console.error('Image failed to load:', e);
+              e.target.style.display = 'none';
+            }}
+          />
         </div>
         <Calendar showers={showers} />
       </div>
