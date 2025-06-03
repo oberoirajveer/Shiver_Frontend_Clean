@@ -460,10 +460,11 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-content">
           <div className="profile-section">
+            <h2 className="profile-title">Rajveer&apos;s Showers</h2>
             <div className="demo-notice">
               <p>Welcome to the iShiver Demo Dashboard! This preview updates with real data from Shiver Sensors in the wild.</p>
             </div>
-            <h2>Recent Showers</h2>
+            <h3>Recent Showers</h3>
             <div className="recent-showers-list">
               {loading ? (
                 <div className="shower-entry">
@@ -537,6 +538,9 @@ const Profile = () => {
         </div>
       </div>
       <div className="right-container">
+        <div className="profile-header">
+          <img src="/pfp.jpeg" alt="Profile" className="profile-picture" />
+        </div>
         <ColdShowerStreak showers={showers} />
         <Calendar showers={showers} />
       </div>

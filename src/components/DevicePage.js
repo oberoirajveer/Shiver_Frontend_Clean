@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchData } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
+import declanPfp from '../assets/images/declanpfp.jpg';
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -379,10 +380,11 @@ const DevicePage = () => {
       <div className="profile-container">
         <div className="profile-content">
           <div className="profile-section">
+            <h2 className="profile-title">Declan&apos;s Showers</h2>
             <div className="demo-notice">
-              <p>Device {deviceId} Shower Data</p>
+              <p>Welcome to the iShiver Demo Dashboard! This preview updates with real data from Shiver Sensors in the wild.</p>
             </div>
-            <h2>Recent Showers</h2>
+            <h3>Recent Showers</h3>
             <div className="recent-showers-list">
               {loading ? (
                 <div className="shower-entry">
@@ -456,6 +458,9 @@ const DevicePage = () => {
         </div>
       </div>
       <div className="right-container">
+        <div className="profile-header">
+          <img src={declanPfp} alt="Declan" className="profile-picture" />
+        </div>
         <ColdShowerStreak showers={showers} />
         <Calendar showers={showers} />
       </div>
