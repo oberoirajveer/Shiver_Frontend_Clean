@@ -465,9 +465,9 @@ const DevicePage = () => {
       <div className="right-container">
         <div className="profile-header">
           <img 
-            src={deviceId === '15681139' ? '/declanpfp.jpg' : '/pfp.jpeg'} 
+            src={deviceId === '15681139' ? declanPfp : rajveerPfp} 
             alt={deviceId === '15681139' ? "Declan" : "Rajveer"} 
-            className="profile-picture" 
+            className="profile-picture"
           />
         </div>
         <ColdShowerStreak showers={showers} />
