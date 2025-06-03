@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchData } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import declanImage from '../assets/images/declan.jpg';
 import './DevicePage.css';
 
 const Calendar = React.memo(({ showers }) => {
@@ -457,6 +458,9 @@ const DevicePage = () => {
       </div>
       <div className="right-container">
         <ColdShowerStreak showers={showers} />
+        <div className="declan-image-container">
+          <img src={declanImage} alt="Declan" className="declan-image" />
+        </div>
         <Calendar showers={showers} />
       </div>
 
