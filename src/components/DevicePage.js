@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchData } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
-import declanPfp from '../assets/images/declanpfp.jpg';
+import declanPfp from '../assets/images/declanpfp.jpeg';
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
