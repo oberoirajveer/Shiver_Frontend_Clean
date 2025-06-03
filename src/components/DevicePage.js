@@ -6,6 +6,9 @@ import './DevicePage.css';
 import declanPfp from '../assets/images/declanpfp.jpg';
 import rajveerPfp from '../assets/images/pfp.jpeg';
 
+console.log('Declan profile picture:', declanPfp);
+console.log('Rajveer profile picture:', rajveerPfp);
+
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
@@ -223,6 +226,7 @@ const ColdShowerStreak = ({ showers }) => {
 
 const DevicePage = () => {
   const { deviceId } = useParams();
+  console.log('Current deviceId:', deviceId);
   const [showers, setShowers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -461,7 +465,7 @@ const DevicePage = () => {
       <div className="right-container">
         <div className="profile-header">
           <img 
-            src={deviceId === '15681139' ? declanPfp : rajveerPfp} 
+            src={deviceId === '15681139' ? '/declanpfp.jpg' : '/pfp.jpeg'} 
             alt={deviceId === '15681139' ? "Declan" : "Rajveer"} 
             className="profile-picture" 
           />
