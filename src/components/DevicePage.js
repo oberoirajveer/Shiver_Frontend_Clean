@@ -5,6 +5,8 @@ import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tool
 import './DevicePage.css';
 import declanPfp from '../assets/images/declanpfp.jpeg';
 
+console.log('Declan profile picture import:', declanPfp);
+
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
@@ -461,15 +463,7 @@ const DevicePage = () => {
       </div>
       <div className="right-container">
         <div className="profile-header">
-          <img 
-            src={declanPfp}
-            alt="Declan's Profile" 
-            className="profile-picture"
-            onError={(e) => {
-              console.error('Image failed to load:', e.target.src);
-              e.target.style.display = 'none';
-            }}
-          />
+          <img src={declanPfp} alt="Declan's Profile" className="profile-picture" />
         </div>
         <ColdShowerStreak showers={showers} />
         <Calendar showers={showers} />
