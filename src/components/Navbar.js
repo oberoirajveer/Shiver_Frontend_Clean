@@ -10,6 +10,7 @@ const Navbar = () => {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,10 +32,16 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsDropdownOpen(false);
   };
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+    setIsDropdownOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -55,12 +62,31 @@ const Navbar = () => {
             <Link to="/" className={`navbar-link ${location.pathname === '/' ? 'active' : ''}`} onClick={closeMobileMenu}>
               Home
             </Link>
-            <Link to="/profile" className={`navbar-link ${location.pathname === '/profile' ? 'active' : ''}`} onClick={closeMobileMenu}>
-              Demo
-            </Link>
-            <Link to="/device/15681139" className={`navbar-link ${location.pathname === '/device/15681139' ? 'active' : ''}`} onClick={closeMobileMenu}>
-              Device
-            </Link>
+            <div className="dropdown">
+              <button 
+                className="navbar-link" 
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                onClick={toggleDropdown}
+              >
+                Users
+              </button>
+              <div className={`dropdown-content ${isDropdownOpen ? 'show' : ''}`}>
+                <Link 
+                  to="/profile" 
+                  className={`dropdown-item ${location.pathname === '/profile' ? 'active' : ''}`} 
+                  onClick={closeMobileMenu}
+                >
+                  Rajveer
+                </Link>
+                <Link 
+                  to="/device/15681139" 
+                  className={`dropdown-item ${location.pathname === '/device/15681139' ? 'active' : ''}`} 
+                  onClick={closeMobileMenu}
+                >
+                  Declan
+                </Link>
+              </div>
+            </div>
             <button 
               className="navbar-link" 
               onClick={() => {

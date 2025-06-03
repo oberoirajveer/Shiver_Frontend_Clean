@@ -41,17 +41,18 @@
 
 .navbar-links {
   display: flex;
-  gap: 2rem;
+  gap: 3.5rem;
   align-items: center;
 }
 
 .navbar-link {
   color: #333;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
   transition: color 0.3s ease;
   position: relative;
+  padding: 8px 16px;
 }
 
 .navbar-link:hover {
@@ -189,6 +190,62 @@
   bottom: 0;
 }
 
+/* Dropdown Menu Styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  z-index: 1001;
+  padding: 12px 0;
+  margin-top: 12px;
+}
+
+/* Show dropdown on hover for desktop */
+@media (min-width: 769px) {
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+}
+
+/* Show dropdown on click for mobile */
+@media (max-width: 768px) {
+  .dropdown-content.show {
+    display: block;
+  }
+}
+
+.dropdown-item {
+  color: #333;
+  padding: 16px 24px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+.dropdown-item.active {
+  background-color: #f0f0f0;
+  color: #000;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .navbar-container {
     padding: 0 1rem;
@@ -243,5 +300,22 @@
   .login-button {
     width: 100%;
     text-align: center;
+  }
+
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    min-width: 100%;
+    transform: none;
+    left: 0;
+  }
+
+  .dropdown-item {
+    padding: 20px;
+    text-align: center;
+    font-size: 1.2rem;
   }
 } 
