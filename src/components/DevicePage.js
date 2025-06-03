@@ -4,10 +4,10 @@ import { fetchData } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
 import declanPfp from '../assets/images/declanpfp.jpg';
-import rajveerPfp from '../assets/images/pfp.jpeg';
 
-console.log('Declan profile picture:', declanPfp);
-console.log('Rajveer profile picture:', rajveerPfp);
+console.log('Declan profile picture path:', declanPfp);
+console.log('Current deviceId:', deviceId);
+console.log('Selected image path:', deviceId === '15681139' ? declanPfp : declanPfp);
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -465,9 +465,13 @@ const DevicePage = () => {
       <div className="right-container">
         <div className="profile-header">
           <img 
-            src={deviceId === '15681139' ? declanPfp : rajveerPfp}
-            alt="Profile" 
+            src={declanPfp}
+            alt="Declan's Profile" 
             className="profile-picture"
+            onError={(e) => {
+              console.error('Image failed to load:', e.target.src);
+              e.target.style.display = 'none';
+            }}
           />
         </div>
         <ColdShowerStreak showers={showers} />
