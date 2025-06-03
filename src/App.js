@@ -7,6 +7,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import Profile from "./components/Profile";
+import DevicePage from "./components/DevicePage";
 import "./App.css";
 
 const App = () => {
@@ -287,6 +288,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/device/:deviceId" element={<DevicePage />} />
           </Routes>
         </div>
       </Router>
