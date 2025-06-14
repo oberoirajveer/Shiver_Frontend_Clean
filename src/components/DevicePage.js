@@ -4,7 +4,7 @@ import { fetchData } from '../firebase';
 import { listenForShowerUpdates } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
-import declanPfp from '../../assets/images/declanpfp.jpeg';
+import declanPfp from 'assets/images/declanpfp.jpeg';
 
 console.log('Declan profile picture import:', declanPfp);
 
