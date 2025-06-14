@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import Profile from "./components/Profile";
 import DevicePage from "./components/DevicePage";
+import EmailTest from "./components/EmailTest";
 import "./App.css";
 
 const App = () => {
@@ -289,6 +290,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/device/:deviceId" element={<DevicePage />} />
+            <Route path="/email-test" element={<EmailTest />} />
           </Routes>
         </div>
       </Router>

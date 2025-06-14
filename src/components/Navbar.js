@@ -87,6 +87,13 @@ const Navbar = () => {
                 </Link>
               </div>
             </div>
+            <Link 
+              to="/email-test" 
+              className={`navbar-link ${location.pathname === '/email-test' ? 'active' : ''}`} 
+              onClick={closeMobileMenu}
+            >
+              Email Test
+            </Link>
             <button 
               className="navbar-link" 
               onClick={() => {

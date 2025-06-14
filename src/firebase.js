@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get } from "firebase/database";
+import { getDatabase, ref, get, onValue } from "firebase/database";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { sendShowerNotification } from './services/emailService';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -53,4 +54,59 @@ const fetchData = async (path) => {
   }
 };
 
-export { database, ref, get, auth, signInWithGoogle, signOutUser, fetchData };
+// Listen for shower updates and send notifications
+const listenForShowerUpdates = (deviceId) => {
+  try {
+    console.log(`[Debug] Setting up listener for device: ${deviceId}`);
+    // First listen to the current shower ID
+    const currentShowerRef = ref(database, `${deviceId}/currentshower`);
+    
+    // Set up the listener
+    const unsubscribe = onValue(currentShowerRef, async (snapshot) => {
+      console.log(`[Debug] Current shower ID changed for device ${deviceId}:`, snapshot.val());
+      const currentShowerId = snapshot.val();
+      if (!currentShowerId) {
+        console.log(`[Debug] No current shower ID found for device ${deviceId}`);
+        return;
+      }
+
+      // Then get the actual shower data from the showers tree
+      const showerDataRef = ref(database, `${deviceId}/showers/${currentShowerId}`);
+      console.log(`[Debug] Fetching shower data from path: ${deviceId}/showers/${currentShowerId}`);
+      const showerSnapshot = await get(showerDataRef);
+      const showerData = showerSnapshot.val();
+      
+      if (!showerData) {
+        console.log(`[Debug] No shower data found for shower ID ${currentShowerId}`);
+        return;
+      }
+
+      console.log(`[Debug] Shower data retrieved:`, {
+        hasDuration: !!showerData.duration,
+        hasTemperatureReadings: !!showerData.temperatureReadings,
+        duration: showerData.duration,
+        startTime: showerData.startTime
+      });
+
+      // Check if this shower is completed (has duration and temperature readings)
+      if (showerData.duration && showerData.temperatureReadings) {
+        console.log(`[Debug] Shower appears to be completed, sending notification...`);
+        // Send notification
+        const success = await sendShowerNotification(showerData, deviceId);
+        console.log(`[Debug] Notification send result:`, success);
+      } else {
+        console.log(`[Debug] Shower not yet completed - missing duration or temperature readings`);
+      }
+    }, (error) => {
+      console.error("[Debug] Error in Firebase listener:", error);
+    });
+
+    console.log(`[Debug] Listener setup complete for device: ${deviceId}`);
+    return unsubscribe;
+  } catch (error) {
+    console.error("[Debug] Error in listenForShowerUpdates:", error);
+    return () => {}; // Return empty cleanup function in case of error
+  }
+};
+
+export { database, ref, get, auth, signInWithGoogle, signOutUser, fetchData, listenForShowerUpdates };
