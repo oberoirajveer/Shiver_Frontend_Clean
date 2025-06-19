@@ -52,7 +52,7 @@ const Calendar = React.memo(({ showers }) => {
       let coldStartTime = null;
       for (let i = 0; i < readings.length; i++) {
         const reading = readings[i];
-        if (reading.temperature < 65) {
+        if (reading.temperature < 70) {
           if (coldStartTime === null) {
             coldStartTime = reading.time;
           }

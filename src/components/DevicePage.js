@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchData } from '../firebase';
+import { listenForShowerUpdates } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
-import declanPfp from '../assets/images/declanpfp.jpeg';
+import { getDeviceInfo } from '../config/devices';
+import declanPfp from 'assets/images/declanpfp.jpeg';
 
 console.log('Declan profile picture import:', declanPfp);
 
@@ -52,7 +54,7 @@ const Calendar = React.memo(({ showers }) => {
       let coldStartTime = null;
       for (let i = 0; i < readings.length; i++) {
         const reading = readings[i];
-        if (reading.temperature < 65) {
+        if (reading.temperature < 70) {
           if (coldStartTime === null) {
             coldStartTime = reading.time;
           }
@@ -234,6 +236,9 @@ const DevicePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const showersPerPage = 7;
 
+  // Get device information dynamically
+  const deviceInfo = getDeviceInfo(deviceId);
+
   const getTemperatureColor = useCallback((temp) => {
     if (!temp) return '#90caf9';
     if (temp < 50) return '#2196f3';
@@ -243,6 +248,11 @@ const DevicePage = () => {
   }, []);
 
   useEffect(() => {
+    // Set up listener for shower updates
+    console.log('[Debug] DevicePage: Setting up shower listener for device:', deviceId);
+    const cleanup = listenForShowerUpdates(deviceId);
+    console.log('[Debug] DevicePage: Listener setup complete');
+
     let isMounted = true;
     const loadShowers = async () => {
       try {
@@ -282,6 +292,8 @@ const DevicePage = () => {
 
     loadShowers();
     return () => {
+      console.log('[Debug] DevicePage: Cleaning up listener for device:', deviceId);
+      if (cleanup) cleanup();
       isMounted = false;
     };
   }, [deviceId]);
@@ -384,7 +396,7 @@ const DevicePage = () => {
       <div className="profile-container">
         <div className="profile-content">
           <div className="profile-section">
-            <h2 className="profile-title">Declan&apos;s Showers</h2>
+            <h2 className="profile-title">{deviceInfo.displayName}</h2>
             <div className="demo-notice">
               <p>Welcome to the iShiver Demo Dashboard! This preview updates with real data from Shiver Sensors in the wild.</p>
             </div>
@@ -463,7 +475,11 @@ const DevicePage = () => {
       </div>
       <div className="right-container">
         <div className="profile-header">
-          <img src={declanPfp} alt="Declan's Profile" className="profile-picture" />
+          <img 
+            src={deviceInfo.id === '15681139' ? declanPfp : deviceInfo.profilePicture} 
+            alt={`${deviceInfo.name}'s Profile`} 
+            className="profile-picture" 
+          />
         </div>
         <ColdShowerStreak showers={showers} />
         <Calendar showers={showers} />
