@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
 import AboutModal from './AboutModal';
+import { getAllDevices } from '../config/devices';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -78,22 +79,18 @@ const Navbar = () => {
                 >
                   Rajveer
                 </Link>
-                <Link 
-                  to="/device/15681139" 
-                  className={`dropdown-item ${location.pathname === '/device/15681139' ? 'active' : ''}`} 
-                  onClick={closeMobileMenu}
-                >
-                  Declan
-                </Link>
+                {getAllDevices().map((device) => (
+                  <Link 
+                    key={device.id}
+                    to={`/device/${device.id}`} 
+                    className={`dropdown-item ${location.pathname === `/device/${device.id}` ? 'active' : ''}`} 
+                    onClick={closeMobileMenu}
+                  >
+                    {device.name}
+                  </Link>
+                ))}
               </div>
             </div>
-            <Link 
-              to="/email-test" 
-              className={`navbar-link ${location.pathname === '/email-test' ? 'active' : ''}`} 
-              onClick={closeMobileMenu}
-            >
-              Email Test
-            </Link>
             <button 
               className="navbar-link" 
               onClick={() => {

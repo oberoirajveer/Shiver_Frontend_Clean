@@ -1,12 +1,8 @@
 import { database, ref, get } from '../firebase';
 import { getUserProfile } from './userService';
+import { getDeviceInfo } from '../config/devices';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
-
-// Email configuration
-const DEVICE_EMAILS = {
-  '15681139': 'oberoirajveer9@gmail.com'
-};
 
 /**
  * Sends a shower notification email to the user associated with the device
@@ -27,7 +23,8 @@ export const sendShowerNotification = async (showerData, deviceId) => {
     });
 
     // Only send email if this device is configured to receive notifications
-    const emailAddress = DEVICE_EMAILS[deviceId];
+    const deviceInfo = getDeviceInfo(deviceId);
+    const emailAddress = deviceInfo.email;
     if (!emailAddress) {
       console.log(`[Debug] No email configured for device ${deviceId}`);
       return false;
