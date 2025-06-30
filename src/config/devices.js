@@ -12,14 +12,14 @@ export const DEVICES = {
     id: '87458506',
     name: 'Sofia',
     displayName: "Sofia's Showers",
-    profilePicture: '/images/pfp.jpeg',
+    profilePicture: '/images/sofiapfp.png',
     email: 'sarah@example.com'
   },
   '63689946': {
     id: '63689946',
     name: 'Daniel',
     displayName: "Daniel's Showers",
-    profilePicture: '/images/pfp.jpeg',
+    profilePicture: '/images/danielpfp.jpg',
     email: 'daniel@example.com'
   },
 };
