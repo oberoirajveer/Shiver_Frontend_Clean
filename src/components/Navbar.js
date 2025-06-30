@@ -107,7 +107,7 @@ const Navbar = () => {
             {currentUser ? (
               <div className="user-profile">
                 <img 
-                  src={currentUser.photoURL || '/profilePictures/default.png'} 
+                  src={currentUser.photoURL || '/images/pfp.jpeg'} 
                   alt={currentUser.displayName || 'User'} 
                   className="user-avatar"
                 />

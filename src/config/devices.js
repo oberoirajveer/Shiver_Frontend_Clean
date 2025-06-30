@@ -4,7 +4,7 @@ export const DEVICES = {
     id: '15681139',
     name: 'Declan',
     displayName: "Declan's Showers",
-    profilePicture: '/assets/images/declanpfp.jpeg',
+    profilePicture: '/images/declanpfp.jpeg',
     email: 'oberoirajveer9@gmail.com'
   },
   // Add more devices here as you scale
@@ -12,14 +12,14 @@ export const DEVICES = {
     id: '87458506',
     name: 'Sofia',
     displayName: "Sofia's Showers",
-    profilePicture: '/assets/images/sarah.jpeg',
+    profilePicture: '/images/pfp.jpeg',
     email: 'sarah@example.com'
   },
   '63689946': {
     id: '63689946',
     name: 'Daniel',
     displayName: "Daniel's Showers",
-    profilePicture: '/assets/images/daniel.jpeg',
+    profilePicture: '/images/pfp.jpeg',
     email: 'daniel@example.com'
   },
 };
@@ -30,7 +30,7 @@ export const getDeviceInfo = (deviceId) => {
     id: deviceId,
     name: 'Unknown Device',
     displayName: 'Unknown Device',
-    profilePicture: '/assets/images/default.png',
+    profilePicture: '/images/pfp.jpeg',
     email: null
   };
 };
