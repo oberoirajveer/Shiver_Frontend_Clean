@@ -26,6 +26,10 @@
       "dest": "/manifest.json"
     },
     {
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
       "src": "/api/(.*)",
       "headers": {
         "Access-Control-Allow-Origin": "*",
