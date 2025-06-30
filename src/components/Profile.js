@@ -3,7 +3,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { fetchShowers } from '../services/api';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './Profile.css';
-import pfp from '../assets/images/pfp.jpeg';
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -540,7 +539,7 @@ const Profile = () => {
       </div>
       <div className="right-container">
         <div className="profile-header">
-          <img src={pfp} alt="Profile" className="profile-picture" />
+          <img src="/images/pfp.jpeg" alt="Profile" className="profile-picture" />
         </div>
         <ColdShowerStreak showers={showers} />
         <Calendar showers={showers} />

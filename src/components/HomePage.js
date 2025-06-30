@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import './HomePage.css';
-import showerBg from '../assets/images/shower-bg.png';
-import sensorUnitRender from '../assets/images/SensorUnitRender.png';
-import temperatureStats from '../assets/images/Temperature Stats.png';
-import temperatureGraph from '../assets/images/Temperature Graph.png';
-import weeklyGoals from '../assets/images/WeekyGoals.png';
 
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     {
-      image: showerBg
+      image: '/images/shower-bg.png'
     },
     {
-      image: sensorUnitRender
+      image: '/images/SensorUnitRender.png'
     }
   ];
 
@@ -69,7 +64,7 @@ const HomePage = () => {
             <h3 className="feature-title">Shower Temperatures</h3>
             <p>A cold shower is typically between 55-65°F. Are you within that range?</p>
             <img 
-              src={temperatureStats}
+              src="/images/Temperature Stats.png"
               alt="Temperature Statistics" 
               className="feature-image"
             />
@@ -78,7 +73,7 @@ const HomePage = () => {
             <h3>Are your showers a mix of hot and cold water? We got you covered.</h3>
             <p>Dig into the data to ensure that the water temperature was right, at different times of your shower, based on your cold shower goals.</p>
             <img 
-              src={temperatureGraph}
+              src="/images/Temperature Graph.png"
               alt="Temperature Graph" 
               className="feature-image"
             />
@@ -87,7 +82,7 @@ const HomePage = () => {
             <h3>Streaks</h3>
             <p>Set a goal and build a streak. We&apos;ll help you track your progress.</p>
             <img 
-              src={weeklyGoals}
+              src="/images/WeekyGoals.png"
               alt="Weekly Goals View" 
               className="feature-image"
             />

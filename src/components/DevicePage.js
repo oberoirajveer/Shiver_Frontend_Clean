@@ -5,9 +5,6 @@ import { listenForShowerUpdates } from '../firebase';
 import { LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './DevicePage.css';
 import { getDeviceInfo } from '../config/devices';
-import declanPfp from 'assets/images/declanpfp.jpeg';
-
-console.log('Declan profile picture import:', declanPfp);
 
 const Calendar = React.memo(({ showers }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -476,7 +473,7 @@ const DevicePage = () => {
       <div className="right-container">
         <div className="profile-header">
           <img 
-            src={deviceInfo.id === '15681139' ? declanPfp : deviceInfo.profilePicture} 
+            src={deviceInfo.profilePicture} 
             alt={`${deviceInfo.name}'s Profile`} 
             className="profile-picture" 
           />
