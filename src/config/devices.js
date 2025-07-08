@@ -22,6 +22,13 @@ export const DEVICES = {
     profilePicture: '/images/danielpfp.jpg',
     email: 'daniel@example.com'
   },
+  '53790000': {
+    id: '53790000',
+    name: 'Derrick',
+    displayName: "Derrick's Showers",
+    profilePicture: '/images/derrickpfp.jpg',
+    email: 'derrick@example.com'
+  },
 };
 
 // Helper function to get device info
