@@ -80,6 +80,36 @@ body {
   justify-content: flex-start;
 }
 
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  align-items: center;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  background: rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+  fill: #333;
+}
+
 .cta-button {
   padding: 1rem 2.5rem;
   border-radius: 4px;
@@ -395,5 +425,20 @@ body {
     right: 2%;
     top: 50%;
     transform: translateY(-50%);
+  }
+
+  .social-links {
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  .social-link {
+    width: 35px;
+    height: 35px;
+  }
+
+  .social-icon {
+    width: 18px;
+    height: 18px;
   }
 } 
