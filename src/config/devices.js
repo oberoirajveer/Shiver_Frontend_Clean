@@ -22,12 +22,19 @@ export const DEVICES = {
     profilePicture: '/images/danielpfp.jpg',
     email: 'daniel@example.com'
   },
-  '53790000': {
-    id: '53790000',
+  '48800204': {
+    id: '48800204',
     name: 'Derrick',
     displayName: "Derrick's Showers",
     profilePicture: '/images/derrickpfp.jpg',
     email: 'derrick@example.com'
+  },
+  '53790000': {
+    id: '53790000',
+    name: 'Winston',
+    displayName: "Winston's Showers",
+    profilePicture: '/images/winstonpfp.jpg',
+    email: 'winston@example.com'
   },
 };
 
